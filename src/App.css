@@ -139,5 +139,8 @@
 
 }
 
-
+.item-statuses span:hover, .items-clear:hover {
+  color: hsl(220, 98%, 61%);
+  cursor: pointer;
+}
 
