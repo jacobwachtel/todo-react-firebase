@@ -2,7 +2,7 @@ import React from 'react';
 import FilterControl from './FilterControl';
 import Task from './Task';
 
-const TaskList = ({tasks, setTasks}) => {
+const TaskList = ({tasks, setTasks, filterStatus, setFilterStatus}) => {
    console.log(tasks);
    return (
       <div className="task-list-wrapper">
@@ -12,13 +12,16 @@ const TaskList = ({tasks, setTasks}) => {
                   key={task.id}
                   text={task.text}
                   status={task.status}
+                  tasks={tasks}
+                  task={task}
+                  setTasks={setTasks}
                />
 })}
          </div>
 
          <div className="task-items-info">
             <div className="items-left">5 Items Left</div>
-            <FilterControl />
+            <FilterControl filterStatus={filterStatus} setFilterStatus={setFilterStatus}/>
             <div className='items-clear'>
                Something
             </div>

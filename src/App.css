@@ -48,6 +48,14 @@
   justify-content: center;
 }
 
+.check-mark img {
+  visibility: hidden;
+}
+
+.check-mark.checked img, .check-mark:hover img{
+  visibility: hidden;
+}
+
 .check-mark {
   background-color: white;
   width: 30px;
@@ -57,6 +65,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.check-mark.checked {
+  background: linear-gradient(135deg, #55ddff 10%, #ca5fff 100%)
+}
+
+.check-mark:hover{
+  background: linear-gradient(135deg, #55ddff 10%, #Ca5fff 100%)
 }
 
 .new-todo-input form {
@@ -120,6 +136,12 @@
 
 .task-text {
   display: flex;
+  color: hsl(234, 39%, 85%);
+}
+
+.task-text.checked {
+  text-decoration: line-through;
+  color: hsl(234, 14%, 35%);
 }
 
 .task-items-info {
@@ -144,3 +166,6 @@
   cursor: pointer;
 }
 
+.items-statuses .active {
+  color: hsl(220, 98%, 61%);
+}

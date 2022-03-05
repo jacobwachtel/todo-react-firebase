@@ -1,11 +1,17 @@
 import React from 'react';
 
-const FilterControl = () => {
+const FilterControl = ({filterStatus, setFilterStatus}) => {
+
+   
+
+   const handleStatus = (status) => {
+      setFilterStatus(status)
+   }
    return (
       <div className="item-statuses">
-         <span>All</span>
-         <span>Active</span>
-         <span>Completed</span>
+         <span onClick={() => handleStatus('all')}>All</span>
+         <span onClick={() => handleStatus('active')}>Active</span>
+         <span onClick={() => handleStatus('completed')}>Completed</span>
       </div>
    );
 };
