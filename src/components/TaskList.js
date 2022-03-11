@@ -1,34 +1,62 @@
-import React from 'react';
-import FilterControl from './FilterControl';
-import Task from './Task';
+import React from 'react'
+import { FilterControl } from './FilterControl'
+import { Task } from './Task'
+import { deleteDoc, doc } from 'firebase/firestore';
+import db from '../utils/firebase';
 
-const TaskList = ({tasks, setTasks, filterStatus, setFilterStatus}) => {
-   console.log(tasks);
-   return (
-      <div className="task-list-wrapper">
-         <div className="task-list">
-            {tasks.map((task) => {
-               return <Task 
-                  key={task.id}
-                  text={task.text}
-                  status={task.status}
-                  tasks={tasks}
-                  task={task}
-                  setTasks={setTasks}
-               />
-})}
-         </div>
 
-         <div className="task-items-info">
-            <div className="items-left">5 Items Left</div>
-            <FilterControl filterStatus={filterStatus} setFilterStatus={setFilterStatus}/>
-            <div className='items-clear'>
-               Something
+
+export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks}) => {
+
+  const clearCompleted = ()=> {
+    //Clear's Tasks by filtering out
+    console.log(tasks)
+
+    tasks.forEach(task => {
+      if(task.status){
+        deleteDoc(doc(db, 'tasks', task.id))
+      }
+    })   
+    
+    // Reset the filterStatus to all
+      setFilterStatus("all")
+  }
+
+  return (
+    
+    <div className='task-list-wrapper'>
+        <div className='task-list'>
+            {filteredTasks.map((task)=> {
+        
+                return <Task 
+                    text = {task.text}
+                    status = {task.staus}
+                    tasks = {tasks}
+                    setTasks = {setTasks}
+                    task = {task}
+                    key = {task.id}
+                    />
+            })}
+
+        </div>
+
+        <div className='task-items-info'>
+            <div className='items-left'>
+                {tasks.length} items left
             </div>
-         </div>
 
-      </div>
-   );
-};
+            <FilterControl 
+                setFilterStatus = {setFilterStatus}
+                tasks={tasks}
+            />
 
-export default TaskList;
+            <div className='items-clear'>
+                <span onClick={clearCompleted}>Clear Completed</span>
+            </div>
+        </div>
+
+    </div>
+
+  
+  )
+}

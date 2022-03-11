@@ -1,58 +1,44 @@
-import React, { useState, useRef } from 'react';
-import TaskList from './TaskList';
+import React, { useState } from 'react';
+import { addDoc, collection } from 'firebase/firestore';
+import db from '../utils/firebase';
 
 
+export const TaskInput = ({tasks,setTasks}) => {
+
+    const [input, setInput] = useState("")
 
 
-const TaskInput = ({setTasks, tasks}) => {
-
-   const [input, setInput] = useState('')
-
-   const handleChange = (e) => {
+    const handleChange = (e)=> {
       setInput(e.target.value)
-   }
+    }
 
-   const handleForm = (e) => {
-      e.preventDefault();
+    const handleForm = async (e) => {
+        e.preventDefault();
 
-      const generateID = (array) => {
-         let IDs = array.map((item) => item.id)
-         return Math.max(...IDs) + 1
-      }
+        if(input) {
+            const collectionRef = collection(db, 'tasks');
+            const payload = {
+                text: input.trim(),
+                status: false
+            }
 
-      const newTask = {
-         id: generateID(),
-         text: input,
-         status: false
-      }
-      setTasks([...tasks, newTask])
-      
+            await addDoc(collectionRef, payload);
+            setInput('');
+        }
+    }
 
-   }
-   
-
-   return (
-      <div className="task-input">
-         <div className="check">
-            <img
-               className="check-mark"
-               src="./images/icon-check.svg"
-               alt="checkbox icon"
-            />
-         </div>
-         <div className="new-todo-input">
+  return (
+    <div className='task-input'>
+        <div className= 'check'>
+            <div className='check-mark'>
+                {/* insert image here */}
+            </div>
+        </div>
+        <div className='new-todo-input'>
             <form onSubmit={handleForm}>
-               <input
-                  id="todo-input"
-                  
-                  onChange={handleChange}
-                  type="input"
-                  placeholder="Create a new todo..."
-               />
+                <input onChange={handleChange} value={input} id='todo-input' type="text" placeholder='Create a new todo...' />
             </form>
-         </div>
-      </div>
-   );
-};
-
-export default TaskInput;
+        </div>
+  </div>
+  )
+}

@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
-import Check from '../images/icon-check.svg'
+import React, { useState } from 'react'
+import Check from '../images/icon-check.svg';
+import { setDoc, doc } from 'firebase/firestore';
+import db from '../utils/firebase';
 
-const Task = ({text, status, tasks, task, setTasks}) => {
 
-      const [mutableTask, setMutableTask] = useState(task)
+export const Task = ({text, task,tasks, setTasks}) => {
 
-      
-      const checked = mutableTask.status ? "checked" : '';
-      const checkIcon = mutableTask.status ? (<img src={Check} alt="completed" />) : "";
+  
+  const [mutableTask, setMutableTask] = useState(task)
 
-      const markCompleted = () => {
-         setMutableTask({...mutableTask, status: !mutableTask.status })   
-         
-         const updatedTasks = tasks.map((item) => {
-            return item.id === mutableTask.id ? item = mutableTask : item
-         })
-         setTasks(updatedTasks);
-      };
+  const checked = mutableTask.status ? "checked" : "";
+  const checkIcon = mutableTask.status ? (<img src={Check} alt="completed"/>) : "";
 
-   return (
-      <div className="task-item">
-         <div className="check" onClick={markCompleted}>
+
+  const markCompleted = () => {
+    
+    // This updates the status on our FrontEnd
+    setMutableTask({...mutableTask, status: !mutableTask.status }) 
+
+    setDoc(doc(db, 'tasks', mutableTask.id), {status: !mutableTask.status}, { merge: true})
+  }
+
+  return (
+    <div className='task-item'>
+        <div className='check' onClick={markCompleted}>
             <div className={`check-mark ${checked}`}>
-               {checkIcon}
+              {checkIcon}
             </div>
-         </div>
-         <div className={`task-text ${checked}`}>
-            <p>{text}</p>
-         </div>
-      </div>
-   );
-};
+        </div>
 
-export default Task;
+        <div className={`task-text ${checked}`}>
+            <p>{text}</p>
+        </div>
+    </div>
+  )
+}
