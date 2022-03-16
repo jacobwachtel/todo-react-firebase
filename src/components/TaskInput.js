@@ -1,12 +1,27 @@
 import React, { useState } from 'react';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import db from '../utils/firebase';
+import store from '../redux/store';
 
 
-export const TaskInput = ({tasks,setTasks}) => {
+
+
+export const TaskInput = ({tasks,setTasks, user}) => {
 
     const [input, setInput] = useState("")
 
+    const generateId = (array) => {
+        // This variable should hold an array of all the ids
+        
+
+        if(array.length === 1 ){
+            return 0
+        } else {
+            const taskIDs = array.map((item)=> item.id)
+            return Math.max(...taskIDs) + 1
+        }
+        
+    }
 
     const handleChange = (e)=> {
       setInput(e.target.value)
@@ -16,13 +31,35 @@ export const TaskInput = ({tasks,setTasks}) => {
         e.preventDefault();
 
         if(input) {
-            const collectionRef = collection(db, 'tasks');
-            const payload = {
-                text: input.trim(),
-                status: false
-            }
+            const docRef = doc(db, 'users', user);
 
-            await addDoc(collectionRef, payload);
+            const newTask = {
+                text: input.trim(),
+                status: false,
+                id: generateId(tasks),
+            }
+            let tasksRef = tasks
+            tasksRef.push(newTask)
+
+            const payload = {
+                tasks: tasksRef
+            }
+            await setDoc(docRef, payload);
+        
+            
+            
+
+            
+
+            // const unsubscribe = store.subscribe(() => {
+            //     console.log('store changed!', store.getState());
+            // })
+            // store.dispatch(
+            //     taskAdded(input)
+            // )
+
+            // console.log(store.getState());
+
             setInput('');
         }
     }

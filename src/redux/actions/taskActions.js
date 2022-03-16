@@ -1,7 +1,9 @@
+import * as actions from '../actions/actionTypes'
+
 export const addTask = (task) => {
     return (dispatch) => {
         dispatch({
-            type: 'addDoc',
+            type: 'ADD_DOC',
             payload: task
         })
     }
@@ -10,8 +12,8 @@ export const addTask = (task) => {
 export const updateTask = (task) => {
     return (dispatch) => {
         dispatch({
-            type: 'setDoc',
-            payload: task
+            type: 'SET_DOC',
+            payload: task.id
         })
     }
 }
@@ -19,7 +21,7 @@ export const updateTask = (task) => {
 export const deleteTask = (task) => {
     return (dispatch) => {
         dispatch({
-            type: 'deleteDoc',
+            type: 'DELETE_DOC',
             payload: task.id
         })
     }

@@ -6,7 +6,7 @@ import db from '../utils/firebase';
 
 
 
-export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks}) => {
+export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, userId}) => {
 
   const clearCompleted = ()=> {
     //Clear's Tasks by filtering out
@@ -35,6 +35,7 @@ export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks}) => {
                     setTasks = {setTasks}
                     task = {task}
                     key = {task.id}
+                    userId={userId}
                     />
             })}
 
@@ -42,7 +43,7 @@ export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks}) => {
 
         <div className='task-items-info'>
             <div className='items-left'>
-                {tasks.length} items left
+                {/* {tasks.length} items left */}
             </div>
 
             <FilterControl 

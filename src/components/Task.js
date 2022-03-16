@@ -4,7 +4,7 @@ import { setDoc, doc } from 'firebase/firestore';
 import db from '../utils/firebase';
 
 
-export const Task = ({text, task,tasks, setTasks}) => {
+export const Task = ({text, task,tasks, setTasks, userId}) => {
 
   
   const [mutableTask, setMutableTask] = useState(task)
@@ -19,6 +19,10 @@ export const Task = ({text, task,tasks, setTasks}) => {
     setMutableTask({...mutableTask, status: !mutableTask.status }) 
 
     setDoc(doc(db, 'tasks', mutableTask.id), {status: !mutableTask.status}, { merge: true})
+  
+    const docRef = doc(db, "users", userId)
+    setDoc(docRef, payload)
+  
   }
 
   return (
