@@ -6,15 +6,16 @@ import db from '../utils/firebase';
 
 
 
-export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, userId}) => {
+export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, user}) => {
 
   const clearCompleted = ()=> {
     //Clear's Tasks by filtering out
-    console.log(tasks)
-
+   
     tasks.forEach(task => {
       if(task.status){
-        deleteDoc(doc(db, 'tasks', task.id))
+        // const docRef = doc(db, "users", user)
+        
+        // deleteDoc(docRef, task.id)
       }
     })   
     
@@ -22,12 +23,15 @@ export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, userI
       setFilterStatus("all")
   }
 
+
+
+
   return (
     
     <div className='task-list-wrapper'>
         <div className='task-list'>
             {filteredTasks.map((task)=> {
-        
+                console.log(task)
                 return <Task 
                     text = {task.text}
                     status = {task.staus}
@@ -35,7 +39,7 @@ export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, userI
                     setTasks = {setTasks}
                     task = {task}
                     key = {task.id}
-                    userId={userId}
+                    userId={user}
                     />
             })}
 
@@ -55,7 +59,7 @@ export const TaskList = ({tasks, setTasks, setFilterStatus, filteredTasks, userI
                 <span onClick={clearCompleted}>Clear Completed</span>
             </div>
         </div>
-
+            
     </div>
 
   

@@ -33,7 +33,7 @@ export const FilterControl = ({setFilterStatus, tasks}) => {
 
   return (
     <div className='items-statuses'>
-        {/* <span className='status' onClick={()=>handleStatus("all")}>
+        <span className='status' onClick={()=>handleStatus("all")}>
         All (<span className='count'>{all()}</span>)
         </span>
         <span className='status' onClick={()=>handleStatus("active")}>
@@ -41,7 +41,7 @@ export const FilterControl = ({setFilterStatus, tasks}) => {
         </span>
         <span className='status' onClick={()=>handleStatus("completed")}>
         Completed (<span className='count'>{allCompleted()}</span>)
-        </span> */}
+        </span>
     </div>
   )
 }

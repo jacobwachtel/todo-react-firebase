@@ -6,13 +6,20 @@ import { onSnapshot, collection, doc } from 'firebase/firestore';
 import db from '../utils/firebase';
 import store from '../redux/store';
 import { auth } from '../utils/firebase'
+import { signOut } from 'firebase/auth';
 
 
 const Dashboard = () => {
     const [tasks, setTasks] = useState([])
     const [filteredTasks, setFilteredTasks] = useState(tasks)
     const [filterStatus, setFilterStatus] = useState("all")
-    const [user, setUser] = useState(null)
+
+    const [user, setUser] = useState({})
+
+    const logout = async () => {
+      await signOut(auth)
+      window.location= '/'
+    }
 
     // Gathers Todo List from Firebase
     // useEffect(() => {
@@ -28,20 +35,29 @@ const Dashboard = () => {
     useEffect(() => {
       // Gets Current User Signed In
       auth.onAuthStateChanged((currentUser) => {
+
         if(currentUser) {
+          // Keeps track of current user
           setUser(currentUser.uid);
         }
         else{
           console.log("ERROR PLEASE SIGN IN");
+          window.location = "/"
         }
       })
+
+      
       // Grab User's Tasks
         const unsub = onSnapshot(doc(db, 'users', `${user}`), (snapshot) => {
         let todos = snapshot.data().tasks
+          console.log(todos);
         setFilteredTasks(todos);
         setTasks(todos);
+
         console.log(snapshot.data().tasks)
       })
+
+
       return unsub
     },[user])
     
@@ -62,6 +78,8 @@ const Dashboard = () => {
         handleFilter()
       },[tasks,filterStatus])
 
+
+
   return (
     <div className="App"> 
         <div className='container'>
@@ -75,15 +93,17 @@ const Dashboard = () => {
             <TaskInput tasks = {tasks} setTasks = {setTasks} user={user}/>
 
                 {/* Todo List Component */}
-            <TaskList 
+            {filteredTasks && <TaskList 
                 tasks = {tasks}
                 setTasks = {setTasks}
                 filterStatus = {filterStatus}
                 setFilterStatus = {setFilterStatus}
                 filteredTasks = {filteredTasks}
-                userId={user}
+                user={user}
             />
+}
         </div>
+        <h3 onClick={logout}>Logout</h3>
   </div>
   
   )

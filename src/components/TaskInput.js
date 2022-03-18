@@ -12,20 +12,20 @@ export const TaskInput = ({tasks,setTasks, user}) => {
 
     const generateId = (array) => {
         // This variable should hold an array of all the ids
-        
 
         if(array.length === 1 ){
             return 0
         } else {
             const taskIDs = array.map((item)=> item.id)
             return Math.max(...taskIDs) + 1
-        }
-        
+        }        
     }
+
 
     const handleChange = (e)=> {
       setInput(e.target.value)
     }
+    
 
     const handleForm = async (e) => {
         e.preventDefault();
@@ -44,9 +44,7 @@ export const TaskInput = ({tasks,setTasks, user}) => {
             const payload = {
                 tasks: tasksRef
             }
-            await setDoc(docRef, payload);
-        
-            
+            await setDoc(docRef, payload);          
             
 
             

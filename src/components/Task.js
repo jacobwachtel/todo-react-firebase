@@ -18,11 +18,20 @@ export const Task = ({text, task,tasks, setTasks, userId}) => {
     // This updates the status on our FrontEnd
     setMutableTask({...mutableTask, status: !mutableTask.status }) 
 
-    setDoc(doc(db, 'tasks', mutableTask.id), {status: !mutableTask.status}, { merge: true})
+    // setDoc(doc(db, 'tasks', mutableTask.id), {status: !mutableTask.status}, { merge: true})
   
     const docRef = doc(db, "users", userId)
-    setDoc(docRef, payload)
-  
+    const arrayRef = tasks;
+    if(tasks.length > 0){
+      const index = tasks.indexOf(task)
+      arrayRef[index] = {...task, status: ! task.status}
+   
+      const payload = {
+        tasks: arrayRef
+      }
+      setDoc(docRef, payload)
+    }
+    
   }
 
   return (
